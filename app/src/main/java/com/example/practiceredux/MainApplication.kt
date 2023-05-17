@@ -13,7 +13,7 @@ class MainApplication : Application() {
         instance = this
         rootReducer = RootReducer()
         appMiddleware = AppMiddleware()
-        store = Store(rootReducer, listOf(appMiddleware), AppState())
+        store = Store(rootReducer, appMiddleware, AppState()) // 단 하나의 인스턴스
     }
 
     companion object {

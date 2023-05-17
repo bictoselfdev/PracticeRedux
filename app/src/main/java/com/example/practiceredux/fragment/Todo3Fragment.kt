@@ -9,17 +9,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.libredux.Store
-import com.example.libredux.StoreSubscriber
-import com.example.practiceredux.MainActivity
+import com.example.libredux.StateSubscriber
 import com.example.practiceredux.MainApplication
 import com.example.practiceredux.R
 import com.example.practiceredux.adapter.TodoAdapter
 import com.example.practiceredux.databinding.FragmentTodoBinding
 import com.example.practiceredux.redux.AppState
-import com.example.practiceredux.redux.Todo1Action
 import com.example.practiceredux.redux.Todo3Action
 
-class Todo3Fragment : Fragment(), StoreSubscriber<AppState> {
+class Todo3Fragment : Fragment(), StateSubscriber<AppState> {
 
     lateinit var binding: FragmentTodoBinding
 

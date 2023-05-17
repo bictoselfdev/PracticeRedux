@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import com.example.libredux.StateSubscriber
 import com.example.libredux.Store
-import com.example.libredux.StoreSubscriber
 import com.example.practiceredux.databinding.ActivityMainBinding
 import com.example.practiceredux.fragment.Todo1Fragment
 import com.example.practiceredux.fragment.Todo2Fragment
@@ -13,7 +14,7 @@ import com.example.practiceredux.fragment.Todo3Fragment
 import com.example.practiceredux.redux.AppState
 import com.example.practiceredux.redux.CommonAction
 
-class MainActivity : AppCompatActivity(), StoreSubscriber<AppState> {
+class MainActivity : AppCompatActivity(), StateSubscriber<AppState> {
 
     lateinit var binding: ActivityMainBinding
 
@@ -31,13 +32,6 @@ class MainActivity : AppCompatActivity(), StoreSubscriber<AppState> {
         binding.btnTodo1.text = String.format("Todo1 (%d)", state.todo1.size)
         binding.btnTodo2.text = String.format("Todo2 (%d)", state.todo2.size)
         binding.btnTodo3.text = String.format("Todo3 (%d)", state.todo3.size)
-
-        when (state.currentFragment) {
-            is Todo1Fragment -> binding.tvCurrentTodo.text = "현재 화면 : Todo1"
-            is Todo2Fragment -> binding.tvCurrentTodo.text = "현재 화면 : Todo2"
-            is Todo3Fragment -> binding.tvCurrentTodo.text = "현재 화면 : Todo3"
-            else -> binding.tvCurrentTodo.text = "현재 화면 : 없음"
-        }
     }
 
     override fun onResume() {
@@ -59,15 +53,9 @@ class MainActivity : AppCompatActivity(), StoreSubscriber<AppState> {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        initUI()
         setListener()
 
-        MainApplication.appMiddleware.setActivity(this)
         store.subscribe(this)
-    }
-
-    private fun initUI() {
-
     }
 
     private fun setListener() {
@@ -76,16 +64,26 @@ class MainActivity : AppCompatActivity(), StoreSubscriber<AppState> {
         }
 
         binding.btnTodo1.setOnClickListener {
-            store.dispatch(CommonAction.FragmentChange(todo1Fragment))
+            replaceFragment(todo1Fragment)
+            binding.tvCurrentTodo.text = "현재 화면 : Todo1"
         }
 
         binding.btnTodo2.setOnClickListener {
-            store.dispatch(CommonAction.FragmentChange(todo2Fragment))
+            replaceFragment(todo2Fragment)
+            binding.tvCurrentTodo.text = "현재 화면 : Todo2"
         }
 
         binding.btnTodo3.setOnClickListener {
-            store.dispatch(CommonAction.FragmentChange(todo3Fragment))
+            replaceFragment(todo3Fragment)
+            binding.tvCurrentTodo.text = "현재 화면 : Todo3"
         }
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.mainFragment, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     companion object {

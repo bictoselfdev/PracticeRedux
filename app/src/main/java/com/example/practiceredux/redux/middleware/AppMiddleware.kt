@@ -13,30 +13,12 @@ import com.example.practiceredux.redux.CommonAction
 
 class AppMiddleware : Middleware<AppState> {
 
-    private var mainActivity: MainActivity? = null
-
     override fun invoke(store: Store<AppState>, action: Action, next: Dispatcher) {
         Log.d(TAG, action.toString())
 
-        when (action) {
-            is CommonAction.FragmentChange -> {
-                replaceFragment(action.fragment)
-            }
-        }
+        // 해당 예제에서는 미들웨어를 통해 비동기처리할 사항이 없기 때문에 껍데기로 두었다.. 바로 Reducer 에게 전달
+
         next.dispatch(action)
-    }
-
-    fun setActivity(activity: MainActivity) {
-        mainActivity = activity
-    }
-
-    private fun replaceFragment(fragment: Fragment) {
-        if (mainActivity != null) {
-            mainActivity!!.supportFragmentManager.beginTransaction()
-                .replace(R.id.mainFragment, fragment)
-                .addToBackStack(null)
-                .commit()
-        }
     }
 
     companion object {

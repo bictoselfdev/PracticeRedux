@@ -1,5 +1,5 @@
 package com.example.libredux
 
-interface StoreSubscriber<State> {
+interface StateSubscriber<State> {
     fun newState(state: State)
 }

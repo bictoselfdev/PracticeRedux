@@ -13,7 +13,7 @@ class Todo1Reducer : Reducer<AppState> {
         val newState = when (action) {
             is Todo1Action.Add -> {
                 val tempState = state.copy(todo1 = ArrayList(state.todo1))
-                tempState.todo1.add(action.todo)
+                tempState.todo1.add(action.todo1)
                 tempState
             }
             is Todo1Action.Clear -> {
